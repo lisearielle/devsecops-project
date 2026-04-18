@@ -1,4 +1,3 @@
- 'EOF'
 name: DevSecOps Pipeline
 
 on:
@@ -10,7 +9,7 @@ on:
 jobs:
 
   lint-yaml:
-    name: "🔍 Lint YAML"
+    name: "Lint YAML"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -23,7 +22,7 @@ jobs:
         run: yamllint k8s-deployment.yaml
 
   build-docker:
-    name: "🐳 Build Docker Image"
+    name: "Build Docker Image"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -42,7 +41,7 @@ jobs:
           path: flask-api.tar
 
   trivy-fs-scan:
-    name: "🛡️ Trivy FS Scan (dépendances)"
+    name: "Trivy FS Scan"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -58,7 +57,7 @@ jobs:
           severity: "CRITICAL,HIGH,MEDIUM"
 
   trivy-image-scan:
-    name: "🐳 Trivy Image Scan"
+    name: "Trivy Image Scan"
     runs-on: ubuntu-latest
     needs: build-docker
     steps:
@@ -80,7 +79,7 @@ jobs:
           severity: "CRITICAL,HIGH,MEDIUM"
 
   conftest-policy:
-    name: "📋 Conftest Policy Check"
+    name: "Conftest Policy Check"
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -95,4 +94,3 @@ jobs:
       - name: Run Conftest on Kubernetes YAML
         run: conftest test k8s-deployment.yaml --policy policy/
         continue-on-error: true
-EOF
